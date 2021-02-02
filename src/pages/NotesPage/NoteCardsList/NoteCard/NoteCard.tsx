@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {FC, useContext} from 'react'
 import {Button, Card, CardActionArea, CardContent, Icon, Typography, useTheme} from '@material-ui/core'
 import {useHistory} from 'react-router-dom'
 import {css} from '@emotion/react'
@@ -6,6 +6,7 @@ import {NoteType} from '../../../../redux/notes/notesReducers'
 import {useDispatch} from 'react-redux'
 import {removeNote} from '../../../../redux/notes/notesActions'
 import {useSnackbar} from 'notistack'
+import {EditNoteContext} from '../../../../App'
 
 export const NoteCard: FC<NoteType> = props => {
 	const theme = useTheme()
@@ -29,9 +30,10 @@ export const NoteCard: FC<NoteType> = props => {
           justify-content: space-around;
 		`,
 		delete: css`
-          margin-left: ${theme.spacing(10)}px;
+          margin-left: ${theme.spacing(4)}px;
 		`,
 	}
+	const {setEdit} = useContext(EditNoteContext)
 	const {enqueueSnackbar} = useSnackbar()
 	const dispatch = useDispatch()
 	const {push} = useHistory()
@@ -44,23 +46,35 @@ export const NoteCard: FC<NoteType> = props => {
 		enqueueSnackbar(`Note deleted!`, {variant: `warning`})
 		push('/')
 	}
+	const handleEditNote = () => {
+		setEdit(props)
+	}
+	
 	return (
 		<Card css={styles.root} elevation={7}>
 			<CardActionArea onClick={handleRedirectToDetails}>
 				<CardContent css={styles.card}>
-					<Typography color='textPrimary' align='center' variant='h5'>
+					<Typography color='primary' align='center' variant='h5'>
 						{props.note}
 					</Typography>
-					<Typography color='textSecondary' align='center' variant='h5'>
-						{props.dateCreated}
+					<Typography color='inherit' align='center' variant='h5'>
+						Date:{new Date(props.dateCreated).toString()}
+					</Typography>
+					<Typography color='secondary'
+					            align='center'
+					            variant='subtitle2'>
+						ID:{props.id}
 					</Typography>
 				</CardContent>
 			</CardActionArea>
 			<Button css={styles.delete}
 			        startIcon={<Icon color='error'>delete</Icon>}
-			        color='secondary'
 			        onClick={handleDelete}>
 				Delete
+			</Button>
+			<Button startIcon={<Icon color='action'>edit</Icon>}
+			        onClick={handleEditNote}>
+				Edit
 			</Button>
 		</Card>
 	

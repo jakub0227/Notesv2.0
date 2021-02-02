@@ -5,7 +5,7 @@ export interface NoteType {
 	id: string;
 	note: string;
 	dateCreated: number;
-	dateModified: number;
+	dateModified?: number;
 }
 
 export type NotesState = NoteType[]

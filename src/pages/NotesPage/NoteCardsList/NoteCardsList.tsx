@@ -23,7 +23,7 @@ export const NoteCardsList: FC = () => {
 		<Box css={styles.root}>
 			<Grid css={styles.gridWrapper} container direction='row' justify='space-around' xs={12}>
 				{notes.map((note) => (
-					<Grid css={styles.gridWrapper} direction='column' item spacing={3} xs='auto'>
+					<Grid css={styles.gridWrapper} direction='column' spacing={3} item xs='auto'>
 						<NoteCard key={note.id} id={note.id} note={note.note} dateCreated={note.dateCreated}
 						          dateModified={note.dateModified}
 						/>
